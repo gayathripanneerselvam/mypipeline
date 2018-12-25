@@ -8,12 +8,5 @@ stage('build') {
     sh "mvn clean install"
   }
 }
- post {
-        always {
-            archive "target/**/*"
-            junit 'target/surefire-reports/*.xml'
-        }
-    }
-   }
 }
 
