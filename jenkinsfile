@@ -1,6 +1,6 @@
 pipeline {
-agent {
-  label 'master'
+agent any
+   stages {
 stage('build') {
   steps {
     sh "git clone https://github.com/kliakos/sparkjava-war-example.git /tmp/tmp"
@@ -8,6 +8,7 @@ stage('build') {
     sh "mvn clean install"
   }
 }
+
    }
 }
 
