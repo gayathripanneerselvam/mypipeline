@@ -5,7 +5,6 @@ stage('build') {
   steps {
     sh "git clone https://github.com/kliakos/sparkjava-war-example.git /tmp/tmp2"
     sh "cd /tmp/tmp2/"
-    sh "apt install maven"
     sh "mvn clean install"
   }
 }
