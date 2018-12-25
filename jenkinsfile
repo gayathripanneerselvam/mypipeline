@@ -4,7 +4,7 @@ agent any
 stage('build') {
   steps {
     sh "git clone https://github.com/kliakos/sparkjava-war-example.git /tmp/tmp"
-    sh "cd /tmp/tmp/sparkjava-war-example"
+    sh "cd /tmp/tmp"
     sh "mvn clean install"
   }
 }
