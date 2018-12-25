@@ -1,0 +1,10 @@
+pipeline {
+agent any 
+stages {
+stage ('Clone') {
+        git url: 'https://github.com/JFrog/project-examples.git'
+   sh "mvn clean install"
+   }
+   
+}
+}
