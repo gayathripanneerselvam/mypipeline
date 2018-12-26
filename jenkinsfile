@@ -1,9 +1,30 @@
-node {
-stage('build') {
+pipeline {
+agent any
+tools {
+maven 'maven'
+jdk '1.8'
+}
+stages {
+stage ('Initialize') {
+steps {
+sh '''
+echo "PATH = ${PATH}"
+echo "M2_HOME = ${M2_HOME}"
+'''
+}
+}
+
+stage('git-clone') {
    git 'https://github.com/kliakos/sparkjava-war-example.git'
   }
   stage('compile'){
     sh 'mvn package'
   }
+stage ('Deploy'){
+sshagent(['ad28f7b1-a139-4ab7-920d-4fcef112c241']) {
+    sh "scp -o StrictHostKeyChecking=no **/target/*.war admin@13.232.175.7:/opt/tomcat/webapps"
+}
+}
+}
 }
 
