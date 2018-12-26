@@ -1,12 +1,9 @@
-pipeline {
-agent any
-   stages {
+node {
 stage('build') {
-  steps {
-    sh "git clone https://github.com/kliakos/sparkjava-war-example.git /tmp/tmp2"
-    sh "cd /tmp/tmp2/"
-    sh "mvn clean install"
+   git 'https://github.com/kliakos/sparkjava-war-example.git'
+  }
+  stage('compile'){
+    sh 'mvn package'
   }
 }
-}
-}
+
