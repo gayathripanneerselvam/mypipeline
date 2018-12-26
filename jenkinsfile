@@ -7,7 +7,7 @@ stage('git-clone') {
   }
 stage ('Deploy'){
 sshagent(['ad28f7b1-a139-4ab7-920d-4fcef112c241']) {
-    sh "scp -o StrictHostKeyChecking=no **/target/*.war admin@13.232.175.7:/opt/tomcat/webapps"
+    sh "scp -o StrictHostKeyChecking=no target/*.war admin@13.232.175.7:/opt/tomcat/webapps"
 }
 }
 }
