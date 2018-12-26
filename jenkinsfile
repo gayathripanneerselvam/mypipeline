@@ -1,27 +1,13 @@
-pipeline {
-    agent any
-    stages {
-        stage ('Initialize') {
-            steps {
-                sh '''
-                    echo "PATH = ${PATH}"
-                    echo "M2_HOME = ${M2_HOME}"
-                '''
-            }
-        }
-
-        stage ('Build') {
-            steps {
-                git "https://github.com/john-smart/game-of-life.git"
-      
-               sh 'mvn clean package'
-            }
-            post {
-                success {
-                    archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
-                    junit '**/target/surefire-reports/*.xml' 
-                }
-            }
-        }
-    }
+node {
+stage('git-clone') {
+   git 'https://github.com/kliakos/sparkjava-war-example.git'
+  }
+  stage('compile'){
+    sh 'mvn package'
+  }
+stage ('Deploy'){
+sshagent(['ad28f7b1-a139-4ab7-920d-4fcef112c241']) {
+    sh "scp -o StrictHostKeyChecking=no **/target/*.war admin@13.232.175.7:/opt/tomcat/webapps"
+}
+}
 }
