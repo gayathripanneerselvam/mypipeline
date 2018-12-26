@@ -1,4 +1,14 @@
 node {
+tools {
+maven 'maven-3.5.2'
+jdk 'jdk1.8'
+}
+stage ('Initialize') {
+sh '''
+echo "PATH = ${PATH}"
+echo "M2_HOME = ${M2_HOME}"
+'''
+}
 stage('git-clone') {
    git 'https://github.com/kliakos/sparkjava-war-example.git'
   }
