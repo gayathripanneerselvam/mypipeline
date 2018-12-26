@@ -1,7 +1,8 @@
 pipeline {
     agent any
    tool name: 'maven-3.5.2', type: 'maven'
-
+def mvn_version = 'maven-3.5.2'
+withEnv( ["PATH+MAVEN=${tool mvn_version}/bin"] )
     stages {
         stage ('Initialize') {
             steps {
@@ -15,7 +16,7 @@ pipeline {
         stage ('Build') {
             steps {
                 git "https://github.com/john-smart/game-of-life.git"
-             
+      
                sh 'mvn clean package'
             }
             post {
