@@ -1,9 +1,7 @@
 pipeline {
     agent any
-    tools {
-        jdk 'jdk1.8'
-        maven 'maven-3.5.2'
-		}
+   tool name: 'maven-3.5.2', type: 'maven'
+
     stages {
         stage ('Initialize') {
             steps {
@@ -17,9 +15,9 @@ pipeline {
         stage ('Build') {
             steps {
                 git "https://github.com/john-smart/game-of-life.git"
-               withEnv(["PATH=${tool 'maven-3.5.2'}/bin:${tool 'jdk1.8'}/bin:${env.PATH}"]){
+             
                sh 'mvn clean package'
-            }}
+            }
             post {
                 success {
                     archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
