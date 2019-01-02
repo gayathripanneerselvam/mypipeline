@@ -1,0 +1,44 @@
+pipeline {
+   agent {label "master"}
+    
+    tools {
+        maven 'maven-3.5.2'
+        jdk 'jdk1.8'
+    }
+    stages {
+        stage ('Initialize') {
+            steps {
+                sh '''
+                    echo "PATH = ${PATH}"
+                    echo "M2_HOME = ${M2_HOME}"
+                '''
+            }
+        }
+
+       
+      
+      stage ('Compile-Package') {
+            steps {
+                git "https://github.com/gayathripanneerselvam/myapp.git"
+              sh 'mvn clean package'
+              sh 'mvn clean package sonar:sonar'
+            }
+        }
+        stage("Quality Gate 1") {
+            steps {
+                waitForQualityGate abortPipeline: true
+            }
+        }
+        stage('SonarQube analysis 2') {
+            steps {
+                sh 'gradle sonarqube'
+            }
+        }
+        stage("Quality Gate 2") {
+            steps {
+                waitForQualityGate abortPipeline: true
+            }
+        }
+    }
+}
+            
