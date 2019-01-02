@@ -14,7 +14,12 @@ pipeline {
                 '''
             }
         }
-    
+    stage ('Compile-Package') {
+            steps {
+                git "https://github.com/gayathripanneerselvam/myapp.git"
+              sh 'mvn clean package'
+              }
+              }
         stage('sonar') {
             steps {
                 sh 'mvn clean package sonar:sonar'
