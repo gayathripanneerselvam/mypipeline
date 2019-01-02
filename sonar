@@ -17,28 +17,20 @@ pipeline {
     stage ('Compile-Package') {
             steps {
                 git "https://github.com/gayathripanneerselvam/myapp.git"
-              sh 'mvn clean package'
+              sh 'mvn -f /var/lib/jenkins/workspace/temp-pipeline/app package'
               }
               }
-        stage('sonar') {
-            steps {
-                sh 'mvn clean package sonar:sonar'
-            }
-        }
-        stage("Quality Gate 1") {
-            steps {
-                waitForQualityGate abortPipeline: true
-            }
-        }
-        stage('SonarQube analysis 2') {
-            steps {
-                sh 'gradle sonarqube'
-            }
-        }
-        stage("Quality Gate 2") {
-            steps {
-                waitForQualityGate abortPipeline: true
-            }
-        }
+        stage ('Sonar-Testing') {
+        
+environment {
+ def scannerhome = tool 'sonar'
+    }
+ steps {
+   withSonarQubeEnv ('sonar') 
+{
+sh "${scannerhome}/bin/sonar -D sonar.projectKey=app -D sonar.projectName=app -D sonar.projectVersion=1.0  -D sonar.web.host=sonar -D sonar.web.port=9000 -D sonar.sources=/var/lib/jenkins/workspace/temp-pipeline/app package/src -D sonar.url=http://13.233.4.162:9000/sonar"
+   }
+}
+    } 
     }
 }
