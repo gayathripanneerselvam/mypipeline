@@ -21,23 +21,18 @@ pipeline {
             steps {
                 git "https://github.com/gayathripanneerselvam/myapp.git"
               sh 'mvn clean package'
-              sh 'mvn clean package sonar:sonar'
-            }
+              }
+              }
+              stage('Sonarqube') {
+    environment {
+        scannerHome = tool 'SonarQubeScanner'
+    }
+    steps {
+        withSonarQubeEnv('sonarqube') {
+            sh "${scannerHome}/bin/sonar-scanner"
         }
-        stage("Quality Gate 1") {
-            steps {
-                waitForQualityGate abortPipeline: true
-            }
-        }
-        stage('SonarQube analysis 2') {
-            steps {
-                sh 'gradle sonarqube'
-            }
-        }
-        stage("Quality Gate 2") {
-            steps {
-                waitForQualityGate abortPipeline: true
-            }
+        timeout(time: 10, unit: 'MINUTES') {
+            waitForQualityGate abortPipeline: true
         }
     }
 }
